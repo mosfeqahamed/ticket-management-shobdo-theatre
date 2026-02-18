@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>শব্দ থিয়েটার | Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="login-page">
+
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <div class="bg-circle bg-circle-1"></div>
+    <div class="bg-circle bg-circle-2"></div>
+    <div class="bg-circle bg-circle-3"></div>
+    <div class="curtain-left"></div>
+    <div class="curtain-right"></div>
+    <div class="stage-lights">
+      <div class="light l1"></div>
+      <div class="light l2"></div>
+      <div class="light l3"></div>
+    </div>
+  </div>
+
+  <!-- Login Container -->
+  <div class="login-container">
+    <div class="login-card" id="loginCard">
+
+      <!-- Branding -->
+      <div class="login-brand">
+        <div class="brand-icon-wrap">
+          <span class="brand-icon">🎭</span>
+        </div>
+        <h1 class="brand-name">শব্দ থিয়েটার</h1>
+        <p class="brand-subtitle">Ticket Management Portal</p>
+      </div>
+
+      <!-- Error Banner -->
+      <div class="error-banner" id="loginError">
+        <i class="ri-error-warning-line"></i>
+        <span id="loginErrorMsg">Invalid credentials. Please try again.</span>
+      </div>
+
+      <!-- Login Form -->
+      <form class="login-form" id="loginForm" novalidate>
+
+        <div class="form-group">
+          <label class="form-label" for="email">
+            <i class="ri-mail-line"></i> Email Address
+          </label>
+          <div class="input-wrapper">
+            <input
+              type="email"
+              id="email"
+              class="form-input"
+              placeholder="admin@shobdo.com"
+              required
+              autocomplete="email"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">
+            <i class="ri-lock-line"></i> Password
+          </label>
+          <div class="input-wrapper pw-wrapper">
+            <input
+              type="password"
+              id="password"
+              class="form-input"
+              placeholder="Enter your password"
+              required
+              autocomplete="current-password"
+            />
+            <button type="button" class="toggle-password" id="togglePassword" aria-label="Toggle password">
+              <i class="ri-eye-line" id="eyeIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-login" id="loginBtn">
+          <span class="btn-text">
+            <i class="ri-login-box-line"></i>
+            Sign In
+          </span>
+          <div class="btn-spinner" id="loginSpinner"></div>
+        </button>
+
+      </form>
+
+      <div class="login-footer">
+        <span>শব্দ থিয়েটার</span>
+        <span class="sep">·</span>
+        <span>Internal Management System</span>
+        <span class="sep">·</span>
+        <span>© 2025</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    // Redirect if already logged in
+    if (api.isLoggedIn()) {
+      window.location.href = 'dashboard.html';
+    }
+
+    // Password toggle
+    document.getElementById('togglePassword').addEventListener('click', function () {
+      const input = document.getElementById('password');
+      const icon = document.getElementById('eyeIcon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'ri-eye-off-line';
+      } else {
+        input.type = 'password';
+        icon.className = 'ri-eye-line';
+      }
+    });
+
+    // Form submission
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const btn = document.getElementById('loginBtn');
+      const btnText = btn.querySelector('.btn-text');
+      const spinner = document.getElementById('loginSpinner');
+      const errorEl = document.getElementById('loginError');
+
+      // Reset error
+      errorEl.classList.remove('show');
+
+      // Loading state
+      btnText.style.display = 'none';
+      spinner.style.display = 'block';
+      btn.disabled = true;
+
+      try {
+        await api.login(email, password);
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        document.getElementById('loginErrorMsg').textContent =
+          err.message || 'Invalid email or password. Please try again.';
+        errorEl.classList.add('show');
+        btn.disabled = false;
+        btnText.style.display = 'flex';
+        spinner.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

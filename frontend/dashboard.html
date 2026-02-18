@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>শব্দ থিয়েটার | Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="dashboard-page">
+
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-emoji">🎭</span>
+      <div class="brand-text">
+        <span class="brand-name-sidebar">শব্দ থিয়েটার</span>
+        <span class="brand-sub">Management</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-section="overview">
+        <i class="ri-dashboard-line"></i>
+        <span>Overview</span>
+      </a>
+      <a href="#" class="nav-item" data-section="dramas">
+        <i class="ri-film-line"></i>
+        <span>Dramas</span>
+      </a>
+      <a href="#" class="nav-item admin-only" data-section="contacts">
+        <i class="ri-contacts-book-line"></i>
+        <span>Contacts</span>
+      </a>
+      <a href="#" class="nav-item admin-only" data-section="subadmins">
+        <i class="ri-user-settings-line"></i>
+        <span>Sub-Admins</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">
+          <i class="ri-user-line"></i>
+        </div>
+        <div class="user-details">
+          <span class="user-email" id="sidebarUserEmail">Loading...</span>
+          <span class="user-role-badge" id="sidebarUserRole">--</span>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="app.logout()" title="Logout">
+        <i class="ri-logout-box-r-line"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <div class="main-content" id="mainContent">
+
+    <!-- Header -->
+    <header class="header">
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="header-title" id="headerTitle">Overview</div>
+      <div class="header-actions">
+        <span class="role-chip" id="headerUserRole">Admin</span>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <div class="content-area">
+
+      <!-- ======== OVERVIEW SECTION ======== -->
+      <section class="section active" id="section-overview">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Dashboard Overview</h2>
+            <p class="section-subtitle">Welcome to শব্দ থিয়েটার management portal</p>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon gold">
+              <i class="ri-film-line"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="totalDramas">--</span>
+              <span class="stat-label">Total Dramas</span>
+            </div>
+          </div>
+          <div class="stat-card admin-only">
+            <div class="stat-icon blue">
+              <i class="ri-contacts-book-line"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="totalContacts">--</span>
+              <span class="stat-label">Total Contacts</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">
+              <i class="ri-calendar-event-line"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="upcomingDramas">--</span>
+              <span class="stat-label">Upcoming Shows</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Dramas -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="ri-time-line"></i> Upcoming Dramas
+            </h3>
+          </div>
+          <div class="card-body" id="overviewTableBody">
+            <div class="loading-state">
+              <div class="loading-spinner"></div>
+              <p>Loading dramas...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======== DRAMAS SECTION ======== -->
+      <section class="section" id="section-dramas">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Dramas</h2>
+            <p class="section-subtitle">Manage theatre drama listings and send SMS notifications</p>
+          </div>
+          <button class="btn-primary admin-only" id="addDramaBtn">
+            <i class="ri-add-circle-line"></i>
+            <span>Add Drama</span>
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="search-box">
+              <i class="ri-search-line"></i>
+              <input type="text" placeholder="Search dramas..." id="dramasSearch" class="search-input" />
+            </div>
+          </div>
+          <div class="card-body" id="dramasTableBody">
+            <div class="loading-state">
+              <div class="loading-spinner"></div>
+              <p>Loading...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======== CONTACTS SECTION ======== -->
+      <section class="section" id="section-contacts">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Contacts</h2>
+            <p class="section-subtitle">Manage SMS recipient phone numbers</p>
+          </div>
+          <button class="btn-primary" id="addContactBtn">
+            <i class="ri-user-add-line"></i>
+            <span>Add Contact</span>
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="search-box">
+              <i class="ri-search-line"></i>
+              <input type="text" placeholder="Search contacts..." id="contactsSearch" class="search-input" />
+            </div>
+            <div class="contacts-count">
+              <span id="contactsCountLabel" class="text-muted text-sm"></span>
+            </div>
+          </div>
+          <div class="card-body" id="contactsTableBody">
+            <div class="loading-state">
+              <div class="loading-spinner"></div>
+              <p>Loading...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======== SUB-ADMINS SECTION ======== -->
+      <section class="section" id="section-subadmins">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Sub-Admins</h2>
+            <p class="section-subtitle">Create accounts for team members</p>
+          </div>
+        </div>
+
+        <div class="subadmin-layout">
+          <div class="card subadmin-form-card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="ri-user-add-line"></i> Create Sub-Admin
+              </h3>
+            </div>
+            <div class="card-body">
+              <form id="subAdminForm" novalidate>
+                <div class="form-group">
+                  <label class="form-label">Email Address *</label>
+                  <div class="input-wrapper">
+                    <i class="ri-mail-line input-icon"></i>
+                    <input
+                      type="email"
+                      id="subAdminEmail"
+                      class="form-input"
+                      placeholder="subadmin@shobdo.com"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Password *</label>
+                  <div class="input-wrapper pw-wrapper">
+                    <i class="ri-lock-line input-icon"></i>
+                    <input
+                      type="password"
+                      id="subAdminPassword"
+                      class="form-input"
+                      placeholder="Minimum 8 characters"
+                      required
+                      minlength="8"
+                    />
+                    <button type="button" class="toggle-password" onclick="togglePw('subAdminPassword', 'subAdminEye')" aria-label="Toggle">
+                      <i class="ri-eye-line" id="subAdminEye"></i>
+                    </button>
+                  </div>
+                </div>
+                <button type="submit" class="btn-primary full-width" id="subAdminSubmitBtn">
+                  <i class="ri-user-add-line"></i>
+                  Create Sub-Admin
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div class="card subadmin-info-card">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ri-information-line"></i> About Sub-Admins</h3>
+            </div>
+            <div class="card-body">
+              <div class="info-list">
+                <div class="info-item">
+                  <div class="info-icon can"><i class="ri-checkbox-circle-line"></i></div>
+                  <div>
+                    <strong>Can view dramas</strong>
+                    <p class="text-muted text-sm">Access to the dramas list</p>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-icon can"><i class="ri-checkbox-circle-line"></i></div>
+                  <div>
+                    <strong>Can edit dramas</strong>
+                    <p class="text-muted text-sm">Update drama name, date, and SMS text</p>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-icon cannot"><i class="ri-close-circle-line"></i></div>
+                  <div>
+                    <strong>Cannot add/delete dramas</strong>
+                    <p class="text-muted text-sm">Only admins can create or remove dramas</p>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-icon cannot"><i class="ri-close-circle-line"></i></div>
+                  <div>
+                    <strong>Cannot send SMS</strong>
+                    <p class="text-muted text-sm">SMS sending is restricted to admins</p>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <div class="info-icon cannot"><i class="ri-close-circle-line"></i></div>
+                  <div>
+                    <strong>No contacts access</strong>
+                    <p class="text-muted text-sm">Contact management is admin-only</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /content-area -->
+  </div><!-- /main-content -->
+
+  <!-- ============ MODAL ============ -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalTitle">Modal</h3>
+        <button class="modal-close" id="modalClose">
+          <i class="ri-close-line"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- ============ CONFIRM DIALOG ============ -->
+  <div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-dialog">
+      <div class="confirm-icon-wrap" id="confirmIconWrap">
+        <i class="ri-error-warning-line"></i>
+      </div>
+      <h3 class="confirm-title" id="confirmTitle">Confirm Action</h3>
+      <p class="confirm-message" id="confirmMessage">Are you sure you want to proceed?</p>
+      <div class="confirm-actions">
+        <button class="btn-secondary" id="confirmCancel">Cancel</button>
+        <button class="btn-danger" id="confirmOk">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TOAST CONTAINER ============ -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
